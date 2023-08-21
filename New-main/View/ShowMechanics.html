@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mechanics List</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .mechanic-item {
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      padding: 10px;
+      margin-bottom: 10px;
+      background-color: #fff;
+    }
+
+    .mechanic-name {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .mechanic-type {
+      color: #888;
+    }
+
+    .pagination {
+      display: flex;
+      list-style: none;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .pagination li {
+      margin: 0 5px;
+      cursor: pointer;
+      padding: 5px 10px;
+      background-color: #4CAF50;
+      color: #fff;
+      border-radius: 4px;
+    }
+
+    .pagination li.active {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Mechanics List</h2>
+    <div id="mechanicsList"></div>
+    <ul class="pagination" id="pagination"></ul>
+  </div>
+
+  <script>
+    const apiUrl = 'http://localhost:3000/mechanics';
+    const mechanicsListElement = document.getElementById('mechanicsList');
+    const paginationElement = document.getElementById('pagination');
+    const itemsPerPage = 5; // Number of mechanics to show per page
+    let currentPage = 1;
+    let mechanicsData = []; // Array to store fetched mechanics data
+
+    // Function to fetch mechanics data from the API
+    async function fetchMechanicsData() {
+      try {
+        const response = await fetch(apiUrl);
+        const data = await response.json();
+        mechanicsData = data;
+        displayMechanicsData(currentPage);
+      } catch (error) {
+        console.error('Failed to fetch mechanics data:', error);
+      }
+    }
+
+    // Function to display mechanics data on the page
+    function displayMechanicsData(page) {
+      const startIndex = (page - 1) * itemsPerPage;
+      const endIndex = startIndex + itemsPerPage;
+      const mechanicsToShow = mechanicsData.slice(startIndex, endIndex);
+
+      mechanicsListElement.innerHTML = '';
+
+      mechanicsToShow.forEach(mechanic => {
+        const mechanicItem = document.createElement('div');
+        mechanicItem.classList.add('mechanic-item');
+        mechanicItem.innerHTML = `
+          <div class="mechanic-name">${mechanic.MechanicName}</div>
+          <div class="mechanic-type">${mechanic.MechanicTypeName}</div>
+          <div class="mechanic-city">${mechanic.City}</div>
+          <div class="mechanic-hours">${mechanic.ActiveHours}</div>
+          <div class="mechanic-MobileNumber">${mechanic.MobileNumber}</div>
+        
+        `;
+        mechanicsListElement.appendChild(mechanicItem);
+      });
+
+      displayPagination();
+    }
+
+    // Function to display pagination
+    function displayPagination() {
+      const totalPages = Math.ceil(mechanicsData.length / itemsPerPage);
+
+      paginationElement.innerHTML = '';
+
+      for (let i = 1; i <= totalPages; i++) {
+        const listItem = document.createElement('li');
+        listItem.textContent = i;
+        if (i === currentPage) {
+          listItem.classList.add('active');
+        }
+        listItem.addEventListener('click', () => {
+          currentPage = i;
+          displayMechanicsData(currentPage);
+        });
+        paginationElement.appendChild(listItem);
+      }
+    }
+
+    // Fetch mechanics data and display on page load
+    fetchMechanicsData();
+  </script>
+</body>
+</html>

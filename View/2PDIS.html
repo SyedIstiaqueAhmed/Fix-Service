@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Distance Calculation and Path</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css">
+</head>
+<body>
+  
+    <div id="map" style="height: 400px;"></div>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <div id="container">
+        <h1>Get Mechanic's Location</h1>
+        <form id="mechanicForm">
+            <label for="userId">User ID:</label>
+            <input type="text" id="userId" >
+
+            <label for="mechanicName">Mechanic Name:</label>
+            <input type="text" id="mechanicName" >
+
+            <button type="submit">Submit</button>
+        </form>
+        <p id="locationInfo1">Mechanic's Location: Submit to get</p>
+        <h1>Your Location</h1>
+        <p id="locationInfo"></p>
+    </div>
+    <script>
+        document.getElementById("mechanicForm").addEventListener("submit", async function(event) {
+            event.preventDefault();
+
+            const userId = document.getElementById("userId").value;
+            const mechanicName = document.getElementById("mechanicName").value;
+
+            const payload = {
+                "MechanicName": mechanicName
+            };
+
+            let apiUrl = `http://localhost:3000/mechanics/get/${userId}`;
+            if (userId == null || userId == "") {
+                apiUrl = "http://localhost:3000/mechanics/get/0";
+            }
+
+            const response = await fetch(apiUrl, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                const locationInfo = document.getElementById("locationInfo1");
+                locationInfo.innerHTML = `Latitude: ${data.latitude}<br>Longitude: ${data.longitude}`;
+            } else {
+                alert("Error getting data.");
+            }
+        });
+    </script>
+    <div id="container">
+        <h1>Distance Calculation and Path</h1>
+        <p>Enter the coordinates for two points:</p>
+        <div>
+            <p id="locationInfo"> My Location: Loading...</p>
+            <label for="lat1">Current Latiude:</label>
+            <input type="text" id="lat1"><br><br>
+            <label for="lng1">Currrent Longitude:</label>
+            <input type="text" id="lng1"><br><br>
+            <label for="lat2">Mechanic Latitude:</label>
+            <input type="text" id="lat2"><br><br>
+            <label for="lng2">Mechanic Longitude:</label>
+            <input type="text" id="lng2"><br><br>
+            <br>
+            <button id="calculateBtn">Calculate Distance</button>
+            <p id="distanceResult"></p>
+        </div>
+        <div id="map"></div>
+    </div>
+   <script>
+         var map = L.map('map').setView([0, 0], 1);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            var lat1Input = document.getElementById('lat1');
+            var lng1Input = document.getElementById('lng1');
+            var lat2Input = document.getElementById('lat2');
+            var lng2Input = document.getElementById('lng2');
+            var calculateBtn = document.getElementById('calculateBtn');
+            var distanceResult = document.getElementById('distanceResult');
+async function getIpLocation() {
+    try {
+        const response = await fetch('https://ipinfo.io/json');
+        const data = await response.json();
+        const locationInfo = document.getElementById('locationInfo');
+        
+        const city = data.city || 'Unknown City';
+        const region = data.region || 'Unknown Region';
+        const country = data.country || 'Unknown Country';
+        var latitude = data.loc ? data.loc.split(',')[0] : 'Unknown Latitude';
+        var  longitude = data.loc ? data.loc.split(',')[1] : 'Unknown Longitude';
+        
+        locationInfo.innerHTML = `
+            City: ${city}<br>
+            Region: ${region}<br>
+            Country: ${country}<br>
+            Latitude: ${latitude}<br>
+            Longitude: ${longitude}
+        `;
+    lat1Input.value = latitude;
+    lng1Input.value = longitude;
+
+    } 
+    catch (error) {
+        const locationInfo = document.getElementById('locationInfo');
+        locationInfo.innerHTML = 'Error getting location: ' + error.message;
+    }
+}
+      
+
+        calculateBtn.addEventListener('click', function() {
+            var lat1 = parseFloat(lat1Input.value);
+            var lng1 = parseFloat(lng1Input.value);
+            var lat2 = parseFloat(lat2Input.value);
+            var lng2 = parseFloat(lng2Input.value);
+
+            var distance = calculateDistance(lat1, lng1, lat2, lng2);
+            distanceResult.innerHTML = 'Distance: ' + distance.toFixed(2) + ' km';
+
+            var pathCoordinates = [
+                [lat1, lng1],
+                [lat2, lng2]
+            ];
+            
+            // Clear previous markers and paths
+            map.eachLayer(function (layer) {
+                if (layer instanceof L.Marker || layer instanceof L.Polyline) {
+                    map.removeLayer(layer);
+                }
+            });
+            
+            // Add markers and path
+            var point1Marker = L.marker([lat1, lng1]).addTo(map);
+            var point2Marker = L.marker([lat2, lng2]).addTo(map);
+            var path = L.polyline(pathCoordinates, {color: 'blue'}).addTo(map);
+            
+            // Fit map bounds to show markers and path
+            var bounds = L.latLngBounds([point1Marker.getLatLng(), point2Marker.getLatLng()]);
+            map.fitBounds(bounds);
+        });
+
+function calculateDistance(lat1, lng1, lat2, lng2) {
+            var R = 6371; // Radius of the earth in kilometers
+            var dLat = deg2rad(lat2 - lat1);
+            var dLng = deg2rad(lng2 - lng1);
+            var a =
+                Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+                Math.sin(dLng / 2) * Math.sin(dLng / 2);
+            var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            var distance = R * c; // Distance in kilometers
+            return distance;
+        }
+
+function deg2rad(deg) {
+    return deg * (Math.PI / 180);
+    }
+       
+getIpLocation();
+
+    </script>
+</body>
+</html>

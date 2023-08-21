@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Panel</title>
+  <style>
+    /* Default styles */
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background-color: rgb(27, 100, 129);
+      
+    }
+
+    .header {
+      background: #333;
+      color: #fff;
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 24px;
+    }
+
+    .header .sign-out {
+      color: #1bd6a7;
+      text-decoration: none;
+    }
+
+    .header .mosjid-button {
+      background: red;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      text-decoration: none;
+      font-size: 16px;
+    }
+
+    .header .mosjid-button:hover {
+      background: #cc0000;
+    }
+    
+    .header .user-button {
+      background: red;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      text-decoration: none;
+      font-size: 16px;
+    }
+
+    .header .user-button:hover {
+      background: #cc0000;
+    }
+
+    .content {
+      display: flex;
+      flex-direction: row;
+    }
+
+    .sidebar {
+      width: 200px;
+      background: #f2f2f2;
+      padding: 20px;
+    }
+
+    .sidebar ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .sidebar li {
+      margin-bottom: 10px;
+    }
+
+    .sidebar li a {
+      color: #333;
+      text-decoration: none;
+    }
+
+    .sidebar li a:hover {
+      color: #000;
+      font-weight: bold;
+    }
+
+    .content-area {
+      flex: 1;
+      padding: 20px;
+    }.content-area .action-buttons:hover {
+      background: #1b1a1a;
+    }
+    
+    .content-area .action-buttons {
+      background: rgb(94, 28, 168);
+      color: #ddd7d7;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      text-decoration: none;
+      font-size: 16px;
+    }
+    table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+table th, table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+table th {
+  background-color: #f2f2f2;
+}
+
+table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.actions button {
+  margin-right: 5px;
+}.actions button {
+      margin-right: 5px;
+    }
+
+    .edit-btn,
+    .delete-btn {
+      padding: 6px 12px;
+      background-color: #ecfc11;
+      color: #070606;
+      border: none;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: background-color 0.3s ease;
+    }
+
+    .edit-btn:hover,
+    .delete-btn:hover {
+      background-color: #751818;
+    }
+
+    
+    /* Rest of the styles */
+
+    /* ... */
+
+  </style>
+</head>
+<body>
+  
+  
+  
+ 
+
+        
+
+            <h1>User Data</h1>
+            <table id="userTable">
+              <thead>
+                <tr>
+                  <th>Serial</th>
+                  <th> ProductId</th>
+                  <th>ProductName</th>
+                  <th> ProductDescription</th>
+                  <th>ProductPrice:</th>
+                  <th>ProductImage</th>
+                  <th> ProductCategory</th>
+                  <th>ProductQuantity</th>
+                  <th>ProductStatus</th>
+                  <th>ProductRating</th>
+                  <th>ProductReview</th>
+                
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- User data will be dynamically added here -->
+              </tbody>
+            </table>
+          
+  
+
+  <script>
+   function signOut() {
+      // Handle sign out functionality here
+      alert('Signing out...');
+      window.location.href = "./index.html";
+    }
+
+    function NewUser() {
+      // Handle add user functionality here
+      alert('Adding user...');
+      window.location.href = "../View/addUser.html";
+    }
+
+    function removeUser() {
+      // Handle remove user functionality here
+      alert('Removing user...');
+    }
+
+    function addMosjid() {
+      // Handle add Mosjid functionality here
+      alert('Adding Mosjid...');
+      window.location.href = "./addMosjid.html";
+    }
+
+    function removeMosjid() {
+      // Handle remove Mosjid functionality here
+      alert('Removing Mosjid...');
+      window.location.href = "./viewMosjid.html";
+    }
+
+    function updateUser() {
+      // Handle update user functionality here
+      alert('Updating user...');
+    }
+
+    function updateMosjid() {
+      // Handle update Mosjid functionality here
+      alert('Updating Mosjid...');
+    }
+    const apiUrl = 'http://localhost:3000/product/';
+const tableBody = document.querySelector('tbody');
+
+async function fetchData() {
+  try {
+    const response = await fetch(apiUrl);
+    const data = await response.json();   console.log(data)
+    return data;
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    return [];
+  }
+}
+
+async function displayData() {
+  const adminData = await fetchData();
+  tableBody.innerHTML = '';
+
+  adminData.forEach((data, index) => {
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td>${index + 1}</td>
+      <td>${data.ProductId}</td>
+      <td>${data. ProductName}</td>
+      <td>${data. ProductDescription}</td>
+      <td>${data.ProductPrice}</td>
+      <td>${data.   ProductImage}</td>
+      <td>${data. ProductCategory}</td>
+      <td>${data.   ProductQuantity}</td>
+      <td>${data.    ProductStatus}</td>
+      <td>${data. ProductRating}</td>
+      <td>${data. ProductReview}</td>
+    
+      <td class="action-buttons">
+        <button class="edit-btn" onclick="editData(${data.UserId})">Edit</button>
+        <button class="delete-btn" onclick="deleteData(${data.UserId})">Delete</button>
+      </td>
+    `;
+    tableBody.appendChild(row);
+  });
+}
+
+function editData(userId) {
+    
+ // alert(`Edit data for row ${index + 1}`);
+  window.location.href = `EditProduct.html?userId=${userId}`;
+}
+
+function deleteData(userId) {
+  window.location.href = `deleteproduct.html?userId=${userId}`;
+}
+
+// Call displayData to fetch and show data when the page loads
+displayData();
+  </script>
+</body>
+</html>

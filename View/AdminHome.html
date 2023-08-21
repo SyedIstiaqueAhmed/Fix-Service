@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Panel</title>
+  <style>
+    /* Default styles */
+  
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+  
+    .header {
+      background: linear-gradient(to right, #333, #ffffff);
+      color: #fff;
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  
+    .header h1 {
+      margin: 0;
+      font-size: 24px;
+      text-shadow: 2px 2px 5px #03e9f4;
+    }
+  
+    .header .sign-out {
+      color: #1bd6a7;
+      text-decoration: none;
+    }
+  
+    .header .mosjid-button,
+    .header .user-button {
+      background: linear-gradient(to right, #cc0000, #ff0000);
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      text-decoration: none;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+    }
+  
+    .header .mosjid-button:hover,
+    .header .user-button:hover {
+      background: linear-gradient(to right, #ff0000, #cc0000);
+    }
+  
+    /* Rest of the styles */
+  
+    /* ... */
+  
+    .content-area .action-buttons:hover {
+      background: #1b1a1a;
+    }
+  
+    .content-area .action-buttons {
+      background: linear-gradient(to right, #5e1ca8, #dd00f6);
+      color: #ddd7d7;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      text-decoration: none;
+      font-size: 16px;
+    }
+  
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+  
+    table th,
+    table td {
+      border: 1px solid #ddd;
+      padding: 8px;
+    }
+  
+    table th {
+      background-color: #f2f2f2;
+    }
+  
+    table tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+  
+    .actions button {
+      margin-right: 5px;
+    }
+  
+    .actions button {
+      margin-right: 5px;
+    }
+  
+    .edit-btn,
+    .delete-btn {
+      padding: 6px 12px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: background-color 0.3s ease;
+      box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+    }
+  
+    .edit-btn:hover,
+    .delete-btn:hover {
+      background-color: #0056b3;
+      box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+    }
+  
+    .edit-btn {
+      animation: rotateBtn 2s linear infinite;
+    }
+    .center-container {
+  text-align: center;
+}
+
+.center-button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+  
+    
+
+    
+  
+    /* Rest of the styles */
+  
+    /* ... */
+  
+  </style>
+  
+</head>
+<body>
+  <!-- <div class="header">
+    <h1>Admin Panel</h1>
+   
+    
+    
+    <a class="sign-out" href="#" onclick="signOut()">Sign Out</a>
+  </div> -->
+  
+  
+     
+    <!-- <div class="content-area">
+        <div class="action-buttons">
+          <button onclick="NewUser()">Add User</button>
+       
+         
+        
+       
+        </div> -->
+
+        
+
+            <h1>User Data</h1>
+            <table id="userTable">
+              <thead>
+                <tr>
+                  <th>Serial</th>
+                  <th>User ID</th>
+                  <th>User Name</th>
+                  <th>User Email</th>
+                  <th>User Password</th>
+                  <th>Contact</th>
+                  <th>Role</th>
+                  <th>Status</th>
+                  <th>Description</th>
+                  <th>UserMobile Number</th>
+                
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- User data will be dynamically added here -->
+              </tbody>
+            </table>
+          </div><div class="center-container">
+            
+            <button class="center-button" onclick="newpage()">Add User</button>
+          </div>
+
+          
+  
+
+  <script>
+   function signOut() {
+      // Handle sign out functionality here
+      alert('Signing out...');
+      window.location.href = "./index.html";
+    }
+    function newpage() {
+      // Handle sign out functionality here
+      alert('Adding product...');
+      window.location.href = "./addproduct.html";
+    }
+
+    function NewUser() {
+      // Handle add user functionality here
+      alert('Adding user...');
+      window.location.href = "./profile.html";
+    }
+
+    function removeUser() {
+      // Handle remove user functionality here
+      alert('Removing user...');
+    }
+
+    function addMosjid() {
+      // Handle add Mosjid functionality here
+      alert('Adding Mosjid...');
+      window.location.href = "./addMosjid.html";
+    }
+
+    function removeMosjid() {
+      // Handle remove Mosjid functionality here
+      alert('Removing Mosjid...');
+      window.location.href = "./viewMosjid.html";
+    }
+
+    function updateUser() {
+      // Handle update user functionality here
+      alert('Updating user...');
+    }
+
+    function updateMosjid() {
+      // Handle update Mosjid functionality here
+      alert('Updating Mosjid...');
+    }
+    const apiUrl = 'http://localhost:3000/user/all';
+const tableBody = document.querySelector('tbody');
+
+async function fetchData() {
+  try {
+    const response = await fetch(apiUrl);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    return [];
+  }
+}
+
+async function displayData() {
+  const adminData = await fetchData();
+  tableBody.innerHTML = '';
+
+  adminData.forEach((data, index) => {
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td>${index + 1}</td>
+      <td>${data.UserId}</td>
+      <td>${data.UserName}</td>
+      <td>${data.UserEmail}</td>
+      <td>${data.UserPassword}</td>
+      <td>${data.Contact}</td>
+      <td>${data.Role}</td>
+      <td>${data.Status}</td>
+      <td>${data.Description}</td>
+      <td>${data.MobileNumber}</td>
+    
+      <td class="action-buttons">
+        <button class="edit-btn" onclick="editData(${data.UserId})">Edit</button>
+        <button class="delete-btn" onclick="deleteData(${data.UserId})">Delete</button>
+      </td>
+    `;
+    tableBody.appendChild(row);
+  });
+}
+
+function editData(userId) {
+    
+ // alert(`Edit data for row ${index + 1}`);
+  window.location.href = `update.html?userId=${userId}`;
+}
+
+function deleteData(userId) {
+  window.location.href = `delete.html?userId=${userId}`;
+}
+
+// Call displayData to fetch and show data when the page loads
+displayData();
+  </script>
+</body>
+</html>

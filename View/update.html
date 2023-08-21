@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #fcf2f2;
+      margin: 0;
+      padding: 20px;
+    }
+    
+    h1 {
+      color: #333;
+    }
+    
+    #userDetails {
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #fff;
+      border: 1px solid #ccc;
+    }
+    
+    form {
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #fff;
+      border: 1px solid #ccc;
+    }
+    
+    label {
+      display: inline-block;
+      width: 100px;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    select {
+      width: 200px;
+      padding: 5px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      margin-bottom: 10px;
+    }
+    
+    button[type="submit"] {
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    @keyframes cartoony {
+      0%, 100% {
+        transform: rotate(0deg);
+      }
+      25% {
+        transform: rotate(10deg);
+      }
+      50% {
+        transform: rotate(-10deg);
+      }
+      75% {
+        transform: rotate(10deg);
+      }
+    }
+    
+    body::before {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background-color: rgba(165, 165, 165, 0.911);
+      border-radius: 50%;
+      animation: glowing 2s ease-in-out infinite;
+      z-index: -1;
+    }
+    
+    @keyframes glowing {
+      0%, 100% {
+        box-shadow: 0 0 20px #e41919, 0 0 50px #03d303, 0 0 100px #2012d8;
+      }
+      50% {
+        box-shadow: 0 0 20px #19ce19, 0 0 20px #926363, 0 0 30px #a7a1c9;
+      }
+    }
+    </style>
+
+  
+</head>
+<body>
+  <h1>Update User </h1>
+
+  <div id="userDetails"></div>
+
+  <form onsubmit="event.preventDefault(); createAdmin()">
+    <label for="UseName">UseName:</label>
+    <input type="text" id="UseName" required>
+    <br>
+    <label for="userId">User ID:</label>
+    <input type="number" id="userId" required>
+    <br>
+    <label for="UserEmail">User Email:</label>
+    <input type="email" id="UserEmail" required>
+    <br>
+    <label for="UserUserPassword">User Password:</label>
+    <input type="password" id="UserUserPassword" required>
+    <br>
+    <label for="Contact">Contact:</label>
+    <input type="text" id="Contact" required>
+    <br>
+    <br>
+    <label for="Role">Role:</label>
+    
+    <select id="userRole" required>
+      <option value="admin">Admin</option>
+      <option value="user">User</option>
+      <option value="mechanic">User</option>
+      
+    </select>
+    <br>
+    <br>
+    <label for="status">Status:</label>
+    <select id="status" name="status">
+      <option value="Active">Active</option>
+      <option value="Inactive">Inactive</option>
+    </select>
+    <br>
+    <button type="submit" >Update</button>
+  </form>
+  
+
+ 
+
+  <script >
+    const queryParams = new URLSearchParams(window.location.search);
+const userId = queryParams.get('userId');
+const userDetailsDiv = document.getElementById('userDetails');
+
+async function fetchUserDetails() {
+  try {
+    const response = await fetch(`http://localhost:3000/user/${userId}`);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error fetching user details:', error);
+    return null;
+  }
+}
+
+async function displayUserDetails() {
+  const userDetails = await fetchUserDetails();
+  if (userDetails) {
+    userDetailsDiv.innerHTML = `
+      <h2>User Details</h2>
+      <p>User Name: ${userDetails.UserName}</p>
+      <p>User Email: ${userDetails.UserEmail}</p>
+      <p>Contact: ${userDetails.Contact}</p>
+      <p>Role: ${userDetails.Role}</p>
+      <p>Status: ${userDetails.Status}</p>
+      <p>Description: ${userDetails.Description}</p>
+      <p>Mobile Number: ${userDetails.MobileNumber}</p>
+    `;
+  } else {
+    userDetailsDiv.innerHTML = '<p>Error fetching user details.</p>';
+  }
+}function sendRequest(method, url, data = null) {
+  return new Promise((resolve, reject) => {
+    axios({
+      method: method,
+      url: url,
+      data: data,
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(response => {
+        resolve(response.data);
+      })
+      .catch(error => {
+        reject(error);
+      });
+  });
+}
+
+
+    async function createAdmin()  {
+      const UseName = document.getElementById('UseName').value;
+  const UserId = document.getElementById('userId').value;
+  const UserEmail = document.getElementById('UserEmail').value;
+  const UserPassword = document.getElementById('UserUserPassword').value;
+  const Role = document.getElementById('userRole').value;
+  const status = document.getElementById('status').value;
+  const Contact = document.getElementById('Contact').value;
+  const data = {UserId:userId,  UserName:UseName, 
+    
+    UserEmail:UserEmail, 
+    UserPassword:UserPassword,Contact:Contact,
+    Role: Role, 
+    Status: status
+      };
+      console.log(data);
+     
+      const response = await fetch(`http://localhost:3000/user/update/${userId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (response.ok) {
+      alert('Admin updated successfully!');
+      registerForm.reset();
+    } else {
+      alert('Failed to register admin!');
+    }
+
+
+}
+
+
+
+// Call displayUserDetails to fetch and show user details when the page loads
+displayUserDetails();
+
+  </script>
+</body>
+</html>

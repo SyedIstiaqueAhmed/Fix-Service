@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Delete User</title><style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f1f1f1;
+    }
+
+    h1 {
+      color: #333;
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    #userDetails {
+      background-color: #18afb9;
+      border-radius: 5px;
+      box-shadow: 0 6px 8px rgba(196, 8, 8, 0.973);
+      padding: 20px;
+      margin: 20px auto;
+      max-width: 600px;
+    }
+
+    button {
+      background-color: #007bff;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: background-color 0.3s ease;
+   
+      margin-bottom: 10px;
+      display: block;
+  margin: 0 auto;
+
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    p {
+      margin: 5px 0;
+    }
+
+    .user-detail {
+      margin-bottom: 10px;
+    }
+
+    .user-detail label {
+      font-weight: bold;
+      display: block;
+    }
+
+    .user-detail p {
+      margin-top: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Delete User</h1>
+
+  <div id="userDetails"></div>
+
+  <button onclick="deleteUser()">Delete</button>
+
+  <script >
+    const queryParams = new URLSearchParams(window.location.search);
+const userId = queryParams.get('userId');
+const userDetailsDiv = document.getElementById('userDetails');
+
+async function fetchUserDetails() {
+  try {
+    const response = await fetch(`http://localhost:3000/user/${userId}`);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error fetching user details:', error);
+    return null;
+  }
+}
+
+async function displayUserDetails() {
+  const userDetails = await fetchUserDetails();
+  if (userDetails) {
+    userDetailsDiv.innerHTML = `
+      <h2>User Details</h2>
+      <p>User Name: ${userDetails.UserName}</p>
+      <p>User Email: ${userDetails.UserEmail}</p>
+      <p>Contact: ${userDetails.Contact}</p>
+      <p>Role: ${userDetails.Role}</p>
+      <p>Status: ${userDetails.Status}</p>
+      <p>Description: ${userDetails.Description}</p>
+      <p>Mobile Number: ${userDetails.MobileNumber}</p>
+    `;
+  } else {
+    userDetailsDiv.innerHTML = '<p>Error fetching user details.</p>';
+  }
+}
+
+async function deleteUser() {
+    await fetch(`http://localhost:3000/user/delete/${userId}`, { method: 'DELETE' })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            alert('Admin deleted successfully.');
+            // Redirect to the admin dashboard page
+            window.location.href = '/adminhome.html';
+          } else {
+            alert('Failed to delete admin.');
+          }
+        })
+        .catch(error => {
+          console.error(error);
+          alert('Admin deleted successfully.');
+          window.location.href = '/adminhome.html';
+          
+        });
+  alert(`Delete user with userId: ${userId}`);
+}
+
+// Call displayUserDetails to fetch and show user details when the page loads
+displayUserDetails();
+
+  </script>
+</body>
+</html>

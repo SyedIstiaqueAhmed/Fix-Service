@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Panel</title>
+</head>
+<body>
+  <h1>User Data</h1>
+  <table id="userTable">
+    <thead>
+      <tr>
+        <th>Product Name</th>
+        <th>Price</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- User data will be dynamically added here -->
+    </tbody>
+  </table>
+  <h1 id="totalPrice">Total Price Is:</h1>
+  <button id="checkout">Payment</button>
+
+  <script>
+    const apiUrl = 'http://localhost:3000/cart/getcart';
+    const tableBody = document.querySelector('tbody');
+    const totalPrice = document.getElementById('totalPrice');
+
+    async function fetchData() {
+      try {
+        const response = await fetch(apiUrl);
+        const data = await response.json();
+        console.log(data);
+        return data;
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        return [];
+      }
+    }
+
+    async function displayData() {
+      const adminData = await fetchData();
+      tableBody.innerHTML = '';
+
+      adminData.forEach((data) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${data.name}</td>
+          <td>${data.price}</td>
+        `;
+        tableBody.appendChild(row);
+      });
+    }
+
+    displayData();
+  </script>
+</body>
+</html>

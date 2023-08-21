@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Management</title>
+ 
+  <style>
+   body {
+    font-family: Arial, sans-serif;
+  }
+
+  h1 {
+    color: #333;
+    text-align: center;
+    text-shadow: 2px 2px 5px #03e9f4;
+  }
+
+  button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  button:hover {
+    background-color: #03e9f4;
+  }
+
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  li {
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    padding: 10px;
+  }
+
+  form {
+    margin: 0 auto;
+    max-width: 400px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 0 5px #03e9f4;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+
+  input[type="text"],
+  input[type="number"],
+  input[type="email"],
+  input[type="password"] {
+    padding: 5px;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  select {
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 10px;
+  }
+
+  button[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  button[type="submit"]:hover {
+    background-color: #03e9f4;
+  }
+
+  .glow {
+    animation: glowing 2s infinite;
+  }
+
+  @keyframes glowing {
+    0% {
+      box-shadow: 0 0 5px #b3200d, 0 0 25px #08e008, 0 0 50px #0c0c0c, 0 0 100px #a6b613;
+    }
+
+    50% {
+      box-shadow: 0 0 20px #f4030f, 0 0 50px #0f8f96, 0 0 100px #2703f4, 0 0 200px #06c25b;
+    }
+
+    100% {
+      box-shadow: 0 0 5px #f40303, 0 0 25px #0a0f0f, 0 0 50px #cef6f8, 0 0 100px #b30966;
+    }
+  }
+  </style>
+</head>
+<body>
+  <!-- admin.html -->
+<h1>Admin Registration</h1>
+<form id="adminRegistrationForm">
+  <label for="userName">Username:</label>
+  <input type="text" id="userName" required>
+  <br>
+  <label for="userEmail">Email:</label>
+  <input type="email" id="userEmail" required>
+  <br>
+  <label for="userPassword">Password:</label>
+  <input type="password" id="userPassword" required>
+  <br>
+  <label for="contact">Address:</label>
+  <input type="text" id="contact" required>
+  <label for="role">Role:</label>
+<select id="role" required>
+  <option value="admin">Admin</option>
+  <option value="user">User</option>
+  <option value="mechanic">Mechanic</option>
+  <option value="shopper">Shopper</option>
+</select>
+<br>
+  <label for="status">Status:</label>
+  
+  <select id="status" required>
+    <option value="admin">Active</option>
+    <option value="user">NotActive</option>
+  </select>
+  <br>
+  <label for="description">Description:</label>
+  <input type="text" id="description" required>
+  <br>
+  <label for="mobileNumber">Mobile Number:</label>
+  <input type="number" id="mobileNumber" required>
+  <br>
+  <button type="submit">Register</button>
+</form>
+
+<script>
+  const registerForm = document.getElementById('adminRegistrationForm');
+
+  registerForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    const userName = document.getElementById('userName').value;
+    const userEmail = document.getElementById('userEmail').value;
+    const userPassword = document.getElementById('userPassword').value;
+    const contact = document.getElementById('contact').value;
+    const role = document.getElementById('role').value;
+    const status = document.getElementById('status').value;
+    const description = document.getElementById('description').value;
+    const mobileNumber = document.getElementById('mobileNumber').value;
+
+    const adminData = {
+      UserName: userName,
+      UserEmail: userEmail,
+      UserPassword: userPassword,
+      Contact: contact,
+      Role: role,
+      Status: status,
+      Description: description,
+      MobileNumber: mobileNumber,
+    };
+
+    const response = await fetch('http://localhost:3000/user/create', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(adminData),
+    });
+
+    if (response.ok) {
+      alert('Admin registered successfully!');
+      window.location.href = './Home/index.html';
+      registerForm.reset();
+    } else {
+      alert('Failed to register admin!');
+    }
+  }
+  );
+</script>
+
+</body>
+</html>

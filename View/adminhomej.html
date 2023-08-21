@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f9fc;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .table-container {
+            margin-top: 20px;
+            overflow-x: auto;
+        }
+
+        #reports-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        #reports-table th,
+        #reports-table td {
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+
+        .chart-container {
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .sidebar {
+            background-color: #333;
+            color: #fff;
+            width: 250px;
+            height: 100vh;
+            padding-top: 20px;
+            position: fixed;
+            transition: 0.3s;
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            padding: 10px;
+            text-align: center;
+        }
+
+        .sidebar ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .sidebar ul li a:hover {
+            color: #ffc107;
+        }
+
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+            transition: 0.3s;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .menu-toggle {
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .bar {
+            width: 30px;
+            height: 4px;
+            background-color: #333;
+            margin: 3px 0;
+            transition: 0.4s;
+        }
+
+        .sidebar.active {
+            width: 60px;
+        }
+
+        .sidebar.active ul li a {
+            text-align: center;
+            font-size: 0.85rem;
+        }
+
+        .overview {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .box {
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            padding: 20px;
+            flex: 1;
+            margin: 0 10px 10px 0;
+            transition: 0.3s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .box h3 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .box p {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .recent-orders {
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            padding: 20px;
+            transition: 0.3s;
+        }
+
+        .recent-orders h2 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+        .recent-orders ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .recent-orders li {
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .recent-orders span {
+            font-size: 1.2rem;
+        }
+
+        .glowing {
+            animation: glowing 2s infinite;
+        }.overview {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .box {
+            /* ... Existing styles ... */
+            margin: 0 10px 10px 0;
+        }
+
+        .glowing {
+            /* ... Existing styles ... */
+        }
+
+        .total-loss {
+            background-color: #f44336;
+        }
+
+        .total-profit {
+            background-color: #4caf50;
+        }
+
+        @keyframes glowing {
+            0% {
+                box-shadow: 0 0 10px rgba(0, 123, 255, 0.7);
+            }
+
+            50% {
+                box-shadow: 0 0 20px rgba(0, 123, 255, 0.9);
+            }
+
+            100% {
+                box-shadow: 0 0 10px rgba(0, 123, 255, 0.7);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sidebar">
+        <h2 class="">Admin Dashboard</h2>
+        <ul>
+            <li><a href="./Analytics.html" class="active">Dashboard</a></li>
+            <li><a href="./ProductView.html">Products</a></li>
+            <li><a href="./ShowMechanics.html">Mechanis</a></li>
+            <li><a href="AdminHome.html">Customers</a></li>
+            <li><a href="./addMechani.html">ADD MECHANIC</a></li>
+            <li><a href="./AddProduct.html">ADD Product</a></li>
+            <li><a href="./2PDIS.html">Mechanic Location</a></li>
+
+            <!-- Add more menu items here -->
+        </ul>
+    </div>
+
+    <div class="content">
+        <header class="header">
+            <div class="menu-toggle">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </div>
+            <h1 class="">Welcome, Admin!</h1>
+            <a href="www.facebook.com" class="">Logout</a>
+        </header>
+
+        <section class="overview">
+            <div class="box">
+                <h3>Total Products</h3>
+                <p id="totalProduct">Fetching</p>
+            </div>
+            <div class="box">
+                <h3>Total Sells</h3>
+                <p id="totalSells" > Fetching </p>
+            </div>
+            <div class="box">
+                <h3>Total Customers</h3>
+                <p id="total-Customer">Fetching</p>
+            </div>
+        </section>
+        <script>
+            // Function to fetch and update Total Products
+function fetchTotalProducts() {
+    fetch('http://localhost:3000/sells/total-products')
+        .then(response => response.json())
+        .then(data => {
+            console.log(data)
+            const totalProductElement = document.getElementById('totalProduct');
+            totalProductElement.innerText = data;
+        })
+        .catch(error => {
+            console.error('Error fetching Total Products:', error);
+        });
+}
+
+// Function to fetch and update Total Sells
+function fetchTotalSells() {
+    fetch('http://localhost:3000/sells/total-selled')
+        .then(response => response.json())
+        .then(data => {
+            const totalSellsElement = document.getElementById('totalSells');
+            totalSellsElement.innerText = data;
+        })
+        .catch(error => {
+            console.error('Error fetching Total Sells:', error);
+        });
+}
+
+// Function to fetch and update Total Customers
+function fetchTotalCustomers() {
+    fetch('http://localhost:3000/sells/total-Customer')
+        .then(response => response.json())
+        .then(data => {
+            const totalCustomerElement = document.getElementById('total-Customer');
+            totalCustomerElement.innerText = data;
+        })
+        .catch(error => {
+            console.error('Error fetching Total Customers:', error);
+        });
+}
+
+// Call the functions to fetch and update data on page load
+document.addEventListener('DOMContentLoaded', function () {
+    fetchTotalProducts();
+    fetchTotalSells();
+    fetchTotalCustomers();
+});
+
+        </script>
+
+        <section class="recent-orders">
+            <!-- <h2>Recent Orders</h2>
+            <ul>
+                <li>
+                    <span class="">Order #12345</span>
+                    <span class="">Customer: John Doe</span>
+                    <span class="">Total: $230</span>
+                </li>
+                <li>
+                    Add more recent orders here
+                </li>
+            </ul> -->
+        </section><section class="overview">
+            <div class="box total-loss">
+                <h3>Total Loss</h3>
+                <p class="" id="totalLoss">Fetching...</p>
+            </div>
+            <div class="box total-profit">
+                <h3>Total Profit</h3>
+                <p class="" id="totalProfit">Fetching...</p>
+            </div>
+        </section>
+
+
+        <div class="container">
+            <h1>Reports</h1>
+            <div class="table-container">
+                <table id="reports-table">
+                    <thead>
+                        <tr>
+                            <th>Product Name</th>
+                            <th>Product Description</th>
+                            <th>Product Price</th>
+                            <th>Product Quantity</th>
+                            <th>Buying Price</th>
+                            <th>Selling Price</th>
+                           
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <div class="chart-container">
+                <canvas id="buySellComparisonChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <canvas id="sellByMonthChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <canvas id="purchaseByMonthChart"></canvas>
+            </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                
+                fetch("http://localhost:3000/sells/sells")
+                    .then((response) => response.json())
+                    .then((data) => {
+                        displayTable(data);
+                        createBuySellComparisonChart(data);
+                        createSellByMonthChart(data);
+                        createPurchaseByMonthChart(data);
+                    })
+                    .catch((error) => console.error(error));
+
+                function displayTable(data) {
+                    const tableBody = document.querySelector("#reports-table tbody");
+
+                    data.forEach((product) => {
+                        const row = document.createElement("tr");
+                        row.innerHTML = `
+                            <td>${product.ProductName}</td>
+                            <td>${product.ProductDescription}</td>
+                            <td>${product.ProductPrice}</td>
+                            <td>${product.ProductQuantity}</td>
+                            <td>${product.Buyingrice}</td>
+                            <td>${product.Sellingrice}</td>
+                        `;
+                        tableBody.appendChild(row);
+                    });
+                }
+
+                function createBuySellComparisonChart(data) {
+                    const buyPrices = data.map((product) => product.Buyingrice);
+                    const sellPrices = data.map((product) => product.Sellingrice);
+
+                    const ctx = document.getElementById("buySellComparisonChart").getContext("2d");
+                    new Chart(ctx, {
+                        type: "bar",
+                        data: {
+                            labels: data.map((product) => product.ProductName),
+                            datasets: [{
+                                    label: "Buying Price",
+                                    data: buyPrices,
+                                    backgroundColor: "rgba(54, 162, 235, 0.5)",
+                                    borderColor: "rgba(54, 162, 235, 1)",
+                                    borderWidth: 1
+                                },
+                                {
+                                    label: "Selling Price",
+                                    data: sellPrices,
+                                    backgroundColor: "rgba(255, 99, 132, 0.5)",
+                                    borderColor: "rgba(255, 99, 132, 1)",
+                                    borderWidth: 1
+                                }
+                            ]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                }
+
+                function createSellByMonthChart(data) {
+                    const sellDates = data.map((product) => new Date(product.SellingDate).toLocaleString("en-US", {
+                        month: "long"
+                    }));
+                    const sellCountsByMonth = {};
+
+                    sellDates.forEach((date) => {
+                        if (sellCountsByMonth[date]) {
+                            sellCountsByMonth[date]++;
+                        } else {
+                            sellCountsByMonth[date] = 1;
+                        }
+                    });
+
+                    const ctx = document.getElementById("sellByMonthChart").getContext("2d");
+                    new Chart(ctx, {
+                        type: "bar",
+                        data: {
+                            labels: Object.keys(sellCountsByMonth),
+                            datasets: [{
+                                label: "Number of Sells",
+                                data: Object.values(sellCountsByMonth),
+                                backgroundColor: "rgba(75, 192, 192, 0.5)",
+                                borderColor: "rgba(75, 192, 192, 1)",
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    stepSize: 1
+                                }
+                            }
+                        }
+                    });
+                }
+
+                function createPurchaseByMonthChart(data) {
+                    const buyDates = data.map((product) => new Date(product.BuyingDate).toLocaleString("en-US", {
+                        month: "long"
+                    }));
+                    const buyCountsByMonth = {};
+
+                    buyDates.forEach((date) => {
+                        if (buyCountsByMonth[date]) {
+                            buyCountsByMonth[date]++;
+                        } else {
+                            buyCountsByMonth[date] = 1;
+                        }
+                    });
+
+                    const ctx = document.getElementById("purchaseByMonthChart").getContext("2d");
+                    new Chart(ctx, {
+                        type: "bar",
+                        data: {
+                            labels: Object.keys(buyCountsByMonth),
+                            datasets: [{
+                                label: "Number of Purchases",
+                                data: Object.values(buyCountsByMonth),
+                                backgroundColor: "rgba(255, 206, 86, 0.5)",
+                                borderColor: "rgba(255, 206, 86, 1)",
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    stepSize: 1
+                                }
+                            }
+                        }
+                    });
+                }
+            // Fetch total loss
+            fetch('http://localhost:3000/sells/total-Loss')
+                .then(response => response.json())
+                .then(data => {
+                    totalLoss.textContent = `$${data}`;
+                })
+                .catch(error => {
+                    console.error('Error fetching total loss:', error);
+                    totalLoss.textContent = 'N/A';
+                });
+
+            // Fetch total profit
+            fetch('http://localhost:3000/sells/total-Profit')
+                .then(response => response.json())
+                .then(data => {
+                    totalProfit.textContent = `$${data}`;
+                })
+                .catch(error => {
+                    console.error('Error fetching total profit:', error);
+                    totalProfit.textContent = 'N/A';
+                });
+        });
+        </script>
+    </div>
+</body>
+
+</html>
