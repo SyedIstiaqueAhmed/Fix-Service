@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Mechanic</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+    }
+
+    .container {
+      max-width: 400px;
+      margin: 50px auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .input-field {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+
+    .submit-button {
+      background-color: #4CAF50;
+      color: #fff;
+      border: none;
+      padding: 12px 20px;
+      font-size: 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .submit-button:hover {
+      background-color: #45a049;
+    }
+
+    /* Animation glow effect */
+    @keyframes glow {
+      0% {
+        box-shadow: 0 0 10px rgba(0, 0, 255, 0.8);
+      }
+      50% {
+        box-shadow: 0 0 20px rgba(0, 0, 255, 0.6);
+      }
+      100% {
+        box-shadow: 0 0 10px rgba(0, 0, 255, 0.8);
+      }
+    }
+
+    .glow {
+      animation: glow 2s infinite;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Create Mechanic</h2>
+    <form id="mechanicForm">
+      <input type="text" class="input-field" placeholder="Mechanic Name" id="mechanicName">
+      <input type="text" class="input-field" placeholder="Mechanic Type Name" id="mechanicTypeName">
+      <input type="text" class="input-field" placeholder="ActiveHours'" id="ActiveHours">
+      <input type="text" class="input-field" placeholder="City" id="city">
+      <button type="submit" class="submit-button glow">Submit</button>
+    </form>
+  </div>
+
+  <script>
+    const form = document.getElementById('mechanicForm');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const mechanic = {
+        MechanicName: document.getElementById('mechanicName').value,
+        MechanicTypeName: document.getElementById('mechanicTypeName').value,
+        City: document.getElementById('city').value,
+        ActiveHours:document.getElementById('ActiveHours').value,
+        IsActive: "false", // Assuming you want to set IsActive to false
+      };
+
+      // Send the mechanic data to the API
+      try {
+        const response = await fetch('http://localhost:3000/mechanics/create', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(mechanic),
+        });
+
+        if (response.ok) {
+          alert('Mechanic added successfully!');
+          // You can redirect to another page or perform any other action on success.
+        } else {
+          alert('Failed to add mechanic. Please try again.');
+        }
+      } catch (error) {
+        alert('An error occurred. Please try again later.');
+      }
+    });
+  </script>
+</body>
+</html>

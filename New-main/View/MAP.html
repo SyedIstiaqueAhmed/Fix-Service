@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Map Image</title>
+	<style>
+        #map-container {
+	width: 100%;
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+#map-image {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+    </style>
+</head>
+<body>
+	<div id="map-container">
+		<img id="map-image" src="" alt="Map Image">
+	</div>
+
+	<script >const url = 'https://maptiles.p.rapidapi.com/es/map/v1/3/4/2.png';
+        const options = {
+            method: 'GET',
+            headers: {
+                'X-RapidAPI-Key': 'c6c7bdf321msh904245fa4fb48cfp138c26jsn86f2c390f26a',
+                'X-RapidAPI-Host': 'maptiles.p.rapidapi.com'
+            }
+        };
+        
+        async function fetchMapImage() {
+            try {
+                const response = await fetch(url, options);
+                const result = await response.text();
+                const mapImage = document.getElementById('map-image');
+                mapImage.src = result;
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        
+        fetchMapImage();
+        </script>
+</body>
+</html>

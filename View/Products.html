@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product List</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f2f2f2;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: white;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .product-card {
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 10px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .product-card img {
+      width: 100%;
+      max-height: 200px;
+      object-fit: cover;
+      border-radius: 5px;
+      margin-bottom: 10px;
+    }
+
+    .product-card h2 {
+      margin: 0;
+      font-size: 20px;
+      color: #333;
+    }
+
+    .product-card p {
+      margin: 5px 0;
+      color: #666;
+    }
+
+    .product-card .price {
+      font-weight: bold;
+      color: #007bff;
+    }
+
+    .product-card .rating {
+      color: #28a745;
+    }
+
+    .product-card .review {
+      color: #dc3545;
+    }
+
+    .product-card .buy-date {
+      color: #17a2b8;
+    }
+
+    .product-card .stock {
+      color: #ffc107;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Product List</h1>
+    <div class="product-list" id="productList">
+      <!-- Product cards will be dynamically added here -->
+    </div>
+  </div>
+
+  <script>
+    const apiUrl = 'http://localhost:3002/sells/products';
+
+    async function fetchProducts() {
+      try {
+        const response = await fetch(apiUrl);
+        const data = await response.json();
+        return data;
+      } catch (error) {
+        console.error('Error fetching products:', error);
+        return [];
+      }
+    }
+
+    function createProductCard(product) {
+      const card = document.createElement('div');
+      card.classList.add('product-card');
+
+      const image = document.createElement('img');
+      image.src = product.ProductImage;
+      card.appendChild(image);
+
+      const name = document.createElement('h2');
+      name.textContent = product.ProductName;
+      card.appendChild(name);
+
+      const description = document.createElement('p');
+      description.textContent = product.ProductDescription;
+      card.appendChild(description);
+
+      const price = document.createElement('p');
+      price.textContent = `Price: $${product.ProductPrice}`;
+      price.classList.add('price');
+      card.appendChild(price);
+
+      const rating = document.createElement('p');
+      rating.textContent = `Rating: ${product.ProductRating}`;
+      rating.classList.add('rating');
+      card.appendChild(rating);
+
+      const review = document.createElement('p');
+      review.textContent = `Review: ${product.ProductReview}`;
+      review.classList.add('review');
+      card.appendChild(review);
+
+      const buyDate = document.createElement('p');
+      buyDate.textContent = `Buying Date: ${new Date(product.BuyingDate).toLocaleDateString()}`;
+      buyDate.classList.add('buy-date');
+      card.appendChild(buyDate);
+
+      const stock = document.createElement('p');
+      stock.textContent = `Stock: ${product.Stocks}`;
+      stock.classList.add('stock');
+      card.appendChild(stock);
+
+      return card;
+    }
+
+    async function renderProductList() {
+      const productList = document.getElementById('productList');
+      productList.innerHTML = '<p>Loading...</p>';
+      
+      const products = await fetchProducts();
+      productList.innerHTML = '';
+
+      if (products.length === 0) {
+        productList.innerHTML = '<p>No products found.</p>';
+        return;
+      }
+
+      products.forEach(product => {
+        const card = createProductCard(product);
+        productList.appendChild(card);
+      });
+    }
+
+    renderProductList();
+  </script>
+</body>
+</html>

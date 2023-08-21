@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create User</title>
+    <style>
+       body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        #container {
+            max-width: 400px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            animation: fade-in 0.6s ease-out;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        @keyframes fade-in {
+            0% { opacity: 0; transform: translateY(-20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <h1>Create User</h1>
+        <form id="userForm">
+           <label for="userId">User ID:</label>
+            <input type="text" id="userId" value="0" readonly>
+
+            <label for="userName">User Name:</label>
+            <input type="text" id="userName" required>
+
+            <label for="userEmail">User Email:</label>
+            <input type="email" id="userEmail" required>
+
+            <label for="userPassword">User Password:</label>
+            <input type="password" id="userPassword" required>
+
+            <label for="contact">Contact:</label>
+            <input type="text" id="contact" required>
+
+            <label for="role">Role:</label>
+            <input type="text" id="role" required>
+
+            <label for="status">Status:</label>
+            <input type="text" id="status" required>
+
+            <label for="description">Description:</label>
+            <input type="text" id="description" required>
+
+            <label for="mobileNumber">Mobile Number:</label>
+            <input type="text" id="mobileNumber" required>
+
+            <button type="submit">Create User</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById("userForm").addEventListener("submit", async function(event) {
+            event.preventDefault();
+
+            const payload = [
+                {
+                    "UserId": parseInt(document.getElementById("userId").value),
+                    "UserName": document.getElementById("userName").value,
+                    "UserEmail": document.getElementById("userEmail").value,
+                    "UserPassword": document.getElementById("userPassword").value,
+                    "Contact": document.getElementById("contact").value,
+                    "Role": document.getElementById("role").value,
+                    "Status": document.getElementById("status").value,
+                    "Description": document.getElementById("description").value,
+                    "MobileNumber": parseInt(document.getElementById("mobileNumber").value)
+                }
+            ];
+
+            const response = await fetch("http://localhost:3000/user/create", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (response.ok) {
+                alert("User created successfully!");
+                // Reset form after successful submission
+                document.getElementById("userForm").reset();
+            } else {
+                alert("Error creating user.");
+            }
+        });
+    </script>
+</body>
+</html>

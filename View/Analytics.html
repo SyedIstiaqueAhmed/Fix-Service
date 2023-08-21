@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+}
+
+.table-container {
+    margin-top: 20px;
+    overflow-x: auto;
+}
+
+#reports-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#reports-table th,
+#reports-table td {
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+
+.chart-container {
+    margin-top: 40px;
+    text-align: center;
+}
+.sidebar {
+            width: 250px;
+            background-color: #333;
+            color: white;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: -250px;
+            transition: left 0.3s;
+        }
+        
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+    
+    <div class="sidebar">
+        <!-- Sidebar content, add links or buttons here -->
+        <button id="addButton">Add</button>
+        <!-- Add more sidebar items as needed -->
+    </div>
+
+    <div class="container">
+        <h1>Reports</h1>
+        <div class="table-container">
+            <table id="reports-table">
+                <thead>
+                    <tr>
+                        <th>Product Name</th>
+                        <th>Product Description</th>
+                        <th>Product Price</th>
+                        <th>Product Quantity</th>
+                        <th>Buying Price</th>
+                        <th>Selling Price</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <div class="chart-container">
+            <canvas id="buySellComparisonChart"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="sellByMonthChart"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="purchaseByMonthChart"></canvas>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script >document.addEventListener("DOMContentLoaded", () => {
+        fetch("http://localhost:3000/sells/sells")
+            .then((response) => response.json())
+            .then((data) => {
+                displayTable(data);
+                createBuySellComparisonChart(data);
+                createSellByMonthChart(data);
+                createPurchaseByMonthChart(data);
+            })
+            .catch((error) => console.error(error));
+    
+        function displayTable(data) {
+            const tableBody = document.querySelector("#reports-table tbody");
+    
+            data.forEach((product) => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${product.ProductName}</td>
+                    <td>${product.ProductDescription}</td>
+                    <td>${product.ProductPrice}</td>
+                    <td>${product.ProductQuantity}</td>
+                    <td>${product.Buyingrice}</td>
+                    <td>${product.Sellingrice}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+    
+        function createBuySellComparisonChart(data) {
+            const buyPrices = data.map((product) => product.Buyingrice);
+            const sellPrices = data.map((product) => product.Sellingrice);
+    
+            const ctx = document.getElementById("buySellComparisonChart").getContext("2d");
+            new Chart(ctx, {
+                type: "bar",
+                data: {
+                    labels: data.map((product) => product.ProductName),
+                    datasets: [{
+                        label: "Buying Price",
+                        data: buyPrices,
+                        backgroundColor: "rgba(54, 162, 235, 0.5)",
+                        borderColor: "rgba(54, 162, 235, 1)",
+                        borderWidth: 1
+                    },
+                    {
+                        label: "Selling Price",
+                        data: sellPrices,
+                        backgroundColor: "rgba(255, 99, 132, 0.5)",
+                        borderColor: "rgba(255, 99, 132, 1)",
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+    
+        function createSellByMonthChart(data) {
+            const sellDates = data.map((product) => new Date(product.SellingDate).toLocaleString("en-US", { month: "long" }));
+            const sellCountsByMonth = {};
+    
+            sellDates.forEach((date) => {
+                if (sellCountsByMonth[date]) {
+                    sellCountsByMonth[date]++;
+                } else {
+                    sellCountsByMonth[date] = 1;
+                }
+            });
+    
+            const ctx = document.getElementById("sellByMonthChart").getContext("2d");
+            new Chart(ctx, {
+                type: "bar",
+                data: {
+                    labels: Object.keys(sellCountsByMonth),
+                    datasets: [{
+                        label: "Number of Sells",
+                        data: Object.values(sellCountsByMonth),
+                        backgroundColor: "rgba(75, 192, 192, 0.5)",
+                        borderColor: "rgba(75, 192, 192, 1)",
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            stepSize: 1
+                        }
+                    }
+                }
+            });
+        }
+    
+        function createPurchaseByMonthChart(data) {
+            const buyDates = data.map((product) => new Date(product.BuyingDate).toLocaleString("en-US", { month: "long" }));
+            const buyCountsByMonth = {};
+    
+            buyDates.forEach((date) => {
+                if (buyCountsByMonth[date]) {
+                    buyCountsByMonth[date]++;
+                } else {
+                    buyCountsByMonth[date] = 1;
+                }
+            });
+    
+            const ctx = document.getElementById("purchaseByMonthChart").getContext("2d");
+            new Chart(ctx, {
+                type: "bar",
+                data: {
+                    labels: Object.keys(buyCountsByMonth),
+                    datasets: [{
+                        label: "Number of Purchases",
+                        data: Object.values(buyCountsByMonth),
+                        backgroundColor: "rgba(255, 206, 86, 0.5)",
+                        borderColor: "rgba(255, 206, 86, 1)",
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            stepSize: 1
+                        }
+                    }
+                }
+            });
+        }
+    });
+    </script>
+</body>
+
+</html>

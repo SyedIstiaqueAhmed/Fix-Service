@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Payment Page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f7f7f7;
+    }
+    
+    h1 {
+      text-align: center;
+    }
+    
+    #cart {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 5px;
+    }
+    
+    #cart-items {
+      list-style-type: none;
+      padding: 0;
+    }
+    
+    #cart-items li {
+      margin-bottom: 10px;
+    }
+    
+    .payment-form {
+      margin-top: 20px;
+      text-align: center;
+    }
+    
+    .payment-form input[type="text"],
+    .payment-form select {
+      width: 250px;
+      padding: 5px;
+      margin-bottom: 10px;
+    }
+    
+    .payment-form button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #4CAF50;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    
+    .payment-form button:hover {
+      background-color: #45a049;
+    }
+  </style>
+  <script>
+    // Add your JavaScript code here
+    function getCartData() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const cartData = urlParams.get('cart');
+      const cartItems = JSON.parse(decodeURIComponent(cartData));
+      displayCartItems(cartItems);
+    }
+
+    function displayCartItems(cartItems) {
+      const cartItemsElement = document.getElementById("cart-items");
+      cartItemsElement.innerHTML = "";
+      for (let i = 0; i < cartItems.length; i++) {
+        const item = cartItems[i];
+        const listItem = document.createElement("li");
+        listItem.textContent = `${item.name} - $${item.price.toFixed(2)}`;
+        cartItemsElement.appendChild(listItem);
+      }
+    }
+
+    window.onload = function() {
+      getCartData();
+    };
+  </script>
+</head>
+<body>
+  <h1>Payment Page</h1>
+
+  <div id="cart">
+    <h2>Cart</h2>
+    <ul id="cart-items">
+      <!-- Cart items will be dynamically added here -->
+    </ul>
+  </div>
+
+  <div class="payment-form">
+    <h2>Payment Method</h2>
+    <form>
+      <label for="card-name">Cardholder Name:</label>
+      <input type="text" id="card-name" name="card-name" required><br>
+      <label for="card-number">Card Number:</label>
+      <input type="text" id="card-number" name="card-number" required><br>
+      <label for="expiry-date">Expiry Date:</label>
+      <input type="text" id="expiry-date" name="expiry-date" required><br>
+      <label for="cvv">CVV:</label>
+      <input type="text" id="cvv" name="cvv" required><br>
+      <button type="submit">Make Payment</button>
+    </form>
+  </div>
+</body>
+</html>

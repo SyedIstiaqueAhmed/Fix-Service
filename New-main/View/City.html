@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Find Mechanic by City</title>
+<style>
+    /* styles.css (This is just a basic example, you can enhance it with your preferred styles) */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+}
+
+h1 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+input[type="text"] {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-right: 10px;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #4CAF50;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+#mechanicDetails {
+  display: none; /* Hide initially, will be shown after form submission */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+}
+
+</style>
+</head>
+<body>
+  <div class="container">
+    <h1>Find Mechanic by City</h1>
+    <form id="mechanicForm">
+      <input type="text" id="cityInput" placeholder="Enter City Name" required>
+      <button type="submit">Find Mechanic</button>
+    </form>
+    <div id="mechanicDetails">
+      <!-- Mechanic details will be displayed here -->
+    </div>
+  </div>
+
+  <!-- Link JavaScript file (industry-standard libraries can be used) -->
+  <script >// script.js
+    document.getElementById('mechanicForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+    
+      const cityInput = document.getElementById('cityInput');
+      const mechanicDetails = document.getElementById('mechanicDetails');
+    
+      const city = cityInput.value.trim();
+    
+      if (!city) {
+        alert('Please enter a valid city name.');
+        return;
+      }
+    
+      try {
+        const response = await fetch('http://localhost:3000/mechanics/city', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ City: city }),
+        });
+    
+        if (!response.ok) {
+          alert('Mechanic not found for the specified city.');
+          return;
+        }
+    
+        const mechanicData = await response.json();
+    
+        
+        // Display mechanic details
+         mechanicDetails.innerHTML = `
+          <h2>${mechanicData.MechanicName}</h2>
+          <p>City: ${mechanicData.City}</p>
+          <p>Available Time: ${mechanicData.ActiveHours}</p>
+        `;
+        mechanicDetails.style.display = 'block';
+      } catch (error) {
+        alert('An error occurred. Please try again later.');
+      }
+    });
+    </script>
+</body>
+</html>

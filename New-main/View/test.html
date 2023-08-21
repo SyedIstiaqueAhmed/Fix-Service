@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f9fc;
+        }
+
+        .sidebar {
+            background-color: #333;
+            color: #fff;
+            width: 250px;
+            height: 100vh;
+            padding-top: 20px;
+            position: fixed;
+            transition: 0.3s;
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            padding: 10px;
+            text-align: center;
+        }
+
+        .sidebar ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .sidebar ul li a:hover {
+            color: #ffc107;
+        }
+
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+            transition: 0.3s;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .menu-toggle {
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .bar {
+            width: 30px;
+            height: 4px;
+            background-color: #333;
+            margin: 3px 0;
+            transition: 0.4s;
+        }
+
+        .sidebar.active {
+            width: 60px;
+        }
+
+        .sidebar.active ul li a {
+            text-align: center;
+            font-size: 0.85rem;
+        }
+
+        .overview {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .box {
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            padding: 20px;
+            flex: 1;
+            margin: 0 10px 10px 0;
+            transition: 0.3s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .box h3 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .box p {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .recent-orders {
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            padding: 20px;
+            transition: 0.3s;
+        }
+
+        .recent-orders h2 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+        .recent-orders ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .recent-orders li {
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .recent-orders span {
+            font-size: 1.2rem;
+        }
+
+        .glowing {
+            animation: glowing 2s infinite;
+        }
+
+        @keyframes glowing {
+            0% {
+                box-shadow: 0 0 10px rgba(0, 123, 255, 0.7);
+            }
+
+            50% {
+                box-shadow: 0 0 20px rgba(0, 123, 255, 0.9);
+            }
+
+            100% {
+                box-shadow: 0 0 10px rgba(0, 123, 255, 0.7);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sidebar">
+        <h2 class="glowing">Admin Dashboard</h2>
+        <ul>
+            <li><a href="#" class="active">Dashboard</a></li>
+            <li><a href="#">Products</a></li>
+            <li><a href="#">Orders</a></li>
+            <li><a href="#">Customers</a></li>
+            <!-- Add more menu items here -->
+        </ul>
+    </div>
+
+    <div class="content">
+        <header class="header">
+            <div class="menu-toggle">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </div>
+            <h1 class="glowing">Welcome, Admin!</h1>
+            <a href="#" class="glowing">Logout</a>
+        </header>
+
+        <section class="overview">
+            <div class="box">
+                <h3>Total Products</h3>
+                <p>356</p>
+            </div>
+            <div class="box">
+                <h3>Total Orders</h3>
+                <p>128</p>
+            </div>
+            <div class="box">
+                <h3>Total Customers</h3>
+                <p>246</p>
+            </div>
+        </section>
+
+        <section class="recent-orders">
+            <h2>Recent Orders</h2>
+            <ul>
+                <li>
+                    <span class="glowing">Order #12345</span>
+                    <span class="glowing">Customer: John Doe</span>
+                    <span class="glowing">Total: $230</span>
+                </li>
+                <li>
+                    <!-- Add more recent orders here -->
+                </li>
+            </ul>
+        </section>
+
+        <!-- Add more sections and features here -->
+
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const menuToggle = document.querySelector('.menu-toggle');
+            const sidebar = document.querySelector('.sidebar');
+
+            menuToggle.addEventListener('click', () => {
+                sidebar.classList.toggle('active');
+            });
+        });
+    </script>
+</body>
+
+</html>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <style>
+        /* ... Existing styles ... */
+        .overview {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .box {
+            /* ... Existing styles ... */
+            margin: 0 10px 10px 0;
+        }
+
+        .glowing {
+            /* ... Existing styles ... */
+        }
+
+        .total-loss {
+            background-color: #f44336;
+        }
+
+        .total-profit {
+            background-color: #4caf50;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sidebar">
+        <!-- ... Existing sidebar content ... -->
+    </div>
+
+    <div class="content">
+        <header class="header">
+            <!-- ... Existing header content ... -->
+        </header>
+
+        <section class="overview">
+            <div class="box total-loss">
+                <h3>Total Loss</h3>
+                <p class="glowing" id="totalLoss">Fetching...</p>
+            </div>
+            <div class="box total-profit">
+                <h3>Total Profit</h3>
+                <p class="glowing" id="totalProfit">Fetching...</p>
+            </div>
+        </section>
+
+        <section class="recent-orders">
+            <!-- ... Existing recent orders section ... -->
+        </section>
+
+        <!-- ... Additional sections ... --> <div class="container">
+        <h1>Reports</h1>
+        <div class="table-container">
+            <table id="reports-table">
+                <thead>
+                    <tr>
+                        <th>Product Name</th>
+                        <th>Product Description</th>
+                        <th>Product Price</th>
+                        <th>Product Quantity</th>
+                        <th>Buying Price</th>
+                        <th>Selling Price</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <div class="chart-container">
+            <canvas id="buySellComparisonChart"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="sellByMonthChart"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="purchaseByMonthChart"></canvas>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const menuToggle = document.querySelector('.menu-toggle');
+            const sidebar = document.querySelector('.sidebar');
+            const totalLoss = document.getElementById('totalLoss');
+            const totalProfit = document.getElementById('totalProfit');
+
+            menuToggle.addEventListener('click', () => {
+                sidebar.classList.toggle('active');
+            });
+
+            // Fetch total loss
+            fetch('http://localhost:3000/sells/total-Loss')
+                .then(response => response.json())
+                .then(data => {
+                    totalLoss.textContent = `$${data.totalLoss}`;
+                })
+                .catch(error => {
+                    console.error('Error fetching total loss:', error);
+                    totalLoss.textContent = 'N/A';
+                });
+
+            // Fetch total profit
+            fetch('http://localhost:3000/sells/total-Profit')
+                .then(response => response.json())
+                .then(data => {
+                    totalProfit.textContent = `$${data.totalProfit}`;
+                })
+                .catch(error => {
+                    console.error('Error fetching total profit:', error);
+                    totalProfit.textContent = 'N/A';
+                });
+        });
+    </script>
+
+
+    <script>
+         document.addEventListener('DOMContentLoaded', () => {
+            const menuToggle = document.querySelector('.menu-toggle');
+            const sidebar = document.querySelector('.sidebar');
+            const totalLoss = document.getElementById('totalLoss');
+            const totalProfit = document.getElementById('totalProfit');
+
+            menuToggle.addEventListener('click', () => {
+                sidebar.classList.toggle('active');
+            });
+
+            // Fetch total loss
+            fetch('http://localhost:3000/sells/total-Loss')
+                .then(response => response.json())
+                .then(data => {
+                    totalLoss.textContent = `$${data.totalLoss}`;
+                })
+                .catch(error => {
+                    console.error('Error fetching total loss:', error);
+                    totalLoss.textContent = 'N/A';
+                });
+
+            // Fetch total profit
+            fetch('http://localhost:3000/sells/total-Profit')
+                .then(response => response.json())
+                .then(data => {
+                    totalProfit.textContent = `$${data.totalProfit}`;
+                })
+                .catch(error => {
+                    console.error('Error fetching total profit:', error);
+                    totalProfit.textContent = 'N/A';
+                });
+        });
+    </script>
+</body>
+
+</html>

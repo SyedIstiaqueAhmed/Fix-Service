@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Registration</title>
+    <style>
+        /* Add your CSS styles here */
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f4f4f4;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="number"],
+        input[type="email"],
+        input[type="password"] {
+            width: 97%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button[type="submit"] {
+            background-color: #007BFF;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>User Registration</h2>
+        <form id="registration-form">
+            
+            <div class="form-group">
+                <label for="UserName">User Name:</label>
+                <input type="text" id="UserName" name="UserName" required>
+            </div>
+            <div class="form-group">
+                <label for="UserEmail">Email:</label>
+                <input type="email" id="UserEmail" name="UserEmail" required>
+            </div>
+            <div class="form-group">
+                <label for="UserPassword">Password:</label>
+                <input type="password" id="UserPassword" name="UserPassword" required>
+            </div>
+            <div class="form-group">
+                <label for="Contact">Contact Number:</label>
+                <input type="text" id="Contact" name="Contact" required>
+            </div>
+            <div class="form-group">
+                <label for="MobileNumber">Emergency Contact Number:</label>
+                <input type="number" id="MobileNumber" name="MobileNumber" required>
+            </div>
+            <div class="form-group">
+                <label for="Description">Description:</label>
+                <input type="text" id="Description" name="Description" required>
+            </div>
+
+            <div class="form-group">
+                <label for="Address">Address:</label>
+                <input type="text" id="Address" name="Address" required>
+            </div>
+            <div class="form-group">
+                <label for="Role">Role:</label>
+                
+                <select name="Role" id="Role">
+                    <!-- <option value="admin">Admin</option> -->
+                    <option value="user">User</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="Status">Status:</label>
+                
+                <select name="Status" id="Status">
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <button type="submit">Submit</button>
+            </div>
+        </form>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('registration-form');
+            form.addEventListener('submit', function (event) {
+                event.preventDefault(); // Prevent the default form submission
+                function randomId() {
+                return Math.floor(Math.random() * 1000000000); // Generates a random number between 0 and 999999999
+            }
+                // Gather form data
+                const formData = {
+                    userId: randomId(),
+                    UserName: document.getElementById('UserName').value,
+                    UserEmail: document.getElementById('UserEmail').value,
+                    UserPassword: document.getElementById('UserPassword').value,
+                    Contact: document.getElementById('Contact').value,
+                    Role: document.getElementById('Role').value,
+                    Status: document.getElementById('Status').value,
+                    Description: document.getElementById('Description').value,
+                    MobileNumber: Number(document.getElementById('MobileNumber').value),
+                    Address: document.getElementById('Address').value,
+                };
+
+                // Send a POST request to your API endpoint
+                fetch('http://localhost:3000/user/create', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Handle the response data here, e.g., show a success message
+                    alert('Registration successful');
+                    console.log('Response from the server:', data);
+                })
+                .catch(error => {
+                    // Handle any errors that occur during the fetch
+                    console.error('Error:', error);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

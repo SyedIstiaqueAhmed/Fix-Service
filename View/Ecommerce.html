@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Garaz E-Commerce</title>
+    <style>body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+    
+    header {
+        background-color: #333;
+        color: #fff;
+        padding: 1rem;
+        text-align: center;
+    }
+    
+    main {
+        padding: 1rem;
+    }
+    
+    .products {
+        margin-bottom: 2rem;
+    }
+    
+    .products h2 {
+        border-bottom: 2px solid #333;
+        padding-bottom: 0.5rem;
+    }
+    
+    .products .product {
+        border: 1px solid #ddd;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+    }
+    
+    .products .product img {
+        max-width: 100px;
+        margin-right: 1rem;
+    }
+    
+    .products .product h3 {
+        margin: 0;
+    }
+    
+    .products .product:hover {
+        transform: scale(1.05);
+    }
+    
+    footer {
+        background-color: #333;
+        color: #fff;
+        padding: 1rem;
+        text-align: center;
+    }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Garaz E-Commerce</h1>
+    </header>
+    <main>
+        <section class="products">
+            <h2>Products</h2>
+            <div id="products-list"></div>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2023 Garaz E-Commerce</p>
+    </footer>
+    <script >
+       document.addEventListener("DOMContentLoaded", () => {
+    //fetch("https://sazzad.adaptable.app/sells/products")
+   fetch("http://localhost:3000/sells/products")
+        .then((response) => response.json())
+        .then((data) => displayProducts(data))
+        .catch((error) => console.error(error));
+
+    function displayProducts(products) {
+        const productsList = document.getElementById("products-list");
+
+        products.forEach((product) => {
+            const productDiv = document.createElement("div");
+            productDiv.classList.add("product");
+            productDiv.dataset.productId = product.ProductId; // Store buied as a data attribute
+
+            const productImage = document.createElement("img");
+            productImage.src = product.ProductImage;
+            productImage.alt = product.ProductName;
+
+            const productInfo = document.createElement("div");
+
+            const productName = document.createElement("h3");
+            productName.textContent = product.ProductName;
+
+            const productPrice = document.createElement("p");
+            productPrice.textContent = `Price: $${product.ProductPrice}`;
+
+            const productQuantity = document.createElement("p");
+            productQuantity.textContent = `Quantity: ${product.ProductQuantity}`;
+
+            productInfo.appendChild(productName);
+            productInfo.appendChild(productPrice);
+            productInfo.appendChild(productQuantity);
+
+            productDiv.appendChild(productImage);
+            productDiv.appendChild(productInfo);
+
+            productsList.appendChild(productDiv);
+
+            // Add click event listener to each product
+            productDiv.addEventListener("click", () => handleProductClick(product));
+        });
+    }
+
+    function handleProductClick(product) {
+        const productId = product.ProductId;
+        const productName = product.ProductName;
+        const productPrice = product.ProductPrice;
+        const productQuantity = product.ProductQuantity;
+
+        const sellData = {
+            ProductId: productId,
+            ProductName: productName,
+            ProductPrice: productPrice,
+            ProductQuantity: productQuantity
+        };
+        confirm("Are you sure you want to sell this product?");
+        console.log(sellData);
+
+        fetch("http://localhost:3000/sells/sell", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(sellData)
+        })
+            .then((response) => response.json())
+            .then((data) => console.log(data))
+            .catch((error) => console.error(error));
+
+        // Add animation when clicking on a product
+        const productsList = document.getElementById("products-list");
+        const clickedProduct = document.querySelector(`[data-product-id="${productId}"]`);
+        clickedProduct.classList.add("clicked");
+        alert("Product Sold Successfully");
+
+        // Reset animation after 1 second
+        setTimeout(() => {
+            clickedProduct.classList.remove("clicked");
+        }, 1000);
+    }
+});
+
+    </script>
+</body>
+</html>

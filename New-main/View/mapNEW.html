@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Map Example</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css">
+</head>
+<body>
+    <div id="map" style="height: 400px;"></div>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+   
+<script>
+    // Initialize the map
+    var latitude = 38.77; // Replace with desired latitude
+    var longitude = -122.4194; //
+    var map = L.map('map').setView([latitude, longitude], 13);
+
+    // Add a tile layer (base map) from OpenStreetMap
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    // Add a marker for the specified location
+    L.marker([latitude, longitude]).addTo(map)
+        .bindPopup('Your Location').openPopup();
+
+
+    </script>
+</body>
+</html>
